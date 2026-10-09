@@ -1,0 +1,20 @@
+site:
+  name: { zh: "your portfolio", en: "your portfolio" }
+  languages: [zh, en]
+  defaultLanguage: zh
+  description: { zh: "旅行者与创作者，两套可以持续更新的个人主页模板。", en: "Two complete personal website templates for travelers and creators." }
+  url: ""
+hero:
+  title: { zh: "给你的故事，\n一个自己的地方。", en: "A place for\nyour own story." }
+  intro: { zh: "记录走过的地方，展示做过的作品。选一套喜欢的模板，换上自己的内容，慢慢长成你的主页。", en: "Keep the places you've been. Share the things you've made. Choose a template and make it your own." }
+templates:
+  - id: traveler
+    title: { zh: "旅行者", en: "Traveler" }
+    description: { zh: "一颗可拖动的地球，把每次出发、照片和回忆连起来。", en: "An interactive globe that connects journeys, photographs and memories." }
+    image: "assets/media/atlas.svg"
+    href: "traveler/"
+  - id: creator
+    title: { zh: "创作者", en: "Creator" }
+    description: { zh: "作品先开口。给项目、经历与正在做的事留出位置。", en: "Let the work speak. A home for projects, experience and what's next." }
+    image: "assets/media/studio.svg"
+    href: "creator/"

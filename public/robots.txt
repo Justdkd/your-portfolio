@@ -1,0 +1,4 @@
+# Example content is not intended for search indexing.
+# After replacing the examples, change Disallow to Allow to enable crawling.
+User-agent: *
+Disallow: /

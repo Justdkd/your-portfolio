@@ -1,0 +1,28 @@
+loading: { zh: "正在读取内容…", en: "Loading your page…" }
+skip: { zh: "跳到主要内容", en: "Skip to content" }
+navigation: { zh: "页面导航", en: "Page navigation" }
+language: { zh: "切换语言", en: "Change language" }
+demo: { zh: "演示内容 · 人物、经历与作品均为虚构", en: "Demo content · fictional people, stories and projects" }
+explore: { zh: "往下看看", en: "Explore below" }
+close: { zh: "关闭详情", en: "Close details" }
+details: { zh: "查看详情", en: "View details" }
+visit: { zh: "访问项目", en: "Visit project" }
+imageMissing: { zh: "图片暂时无法加载", en: "Image unavailable" }
+noMedia: { zh: "这段回忆先用文字留下。", en: "For now, this memory lives in words." }
+upcoming: { zh: "计划中", en: "Planned" }
+allTrips: { zh: "每一次出发", en: "Every journey" }
+tripStats: { zh: "{trips} 次旅行 · {countries} 个国家 · {places} 个地方", en: "{trips} journeys · {countries} countries · {places} places" }
+globeHint: { zh: "拖动地球，点一个地方。也可以从下面的时间线打开。", en: "Drag the globe and choose a place, or browse the timeline below." }
+globeLabel: { zh: "旅行地球仪，可拖动或用方向键转动", en: "Travel globe. Drag or use arrow keys to rotate." }
+zoomIn: { zh: "放大地球", en: "Zoom in" }
+zoomOut: { zh: "缩小地球", en: "Zoom out" }
+placeLabel: { zh: "{name}，查看旅行记录", en: "{name}, view travel memories" }
+clusterLabel: { zh: "放大查看：{names}", en: "Zoom to see: {names}" }
+visits: { zh: "去这里的每一次", en: "Every visit here" }
+routeMissing: { zh: "这个详情不存在或已被关闭。可以继续浏览下方内容。", en: "This detail is unavailable or disabled. Explore the page below." }
+email: { zh: "写一封邮件", en: "Send a note" }
+templateHome: { zh: "模板首页", en: "Template home" }
+footer: { zh: "用自己的内容，慢慢更新。", en: "Your content. A little more, over time." }
+choose: { zh: "选择这套模板", en: "Choose this template" }
+source: { zh: "获取源代码与指南", en: "Get the code and guides" }
+back: { zh: "返回页面", en: "Back to page" }

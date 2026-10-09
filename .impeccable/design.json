@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T00:00:00-07:00",
+  "title": "Design System: your-portfolio",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "dialog",
+        "value": "0 24px 80px #24292330",
+        "purpose": "Focus on media details"
+      }
+    ],
+    "motion": [
+      {
+        "name": "artwork",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "A restrained image hover"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "780px"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1050px"
+      }
+    ]
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "The record or work leads. Navigation stays quiet.",
+    "rules": [
+      "No forced personal brand, sport or voice",
+      "All demo content is fictional",
+      "Paper backgrounds intentionally serve the atlas/editorial world"
+    ]
+  }
+}

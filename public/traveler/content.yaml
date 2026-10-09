@@ -1,0 +1,91 @@
+# 旅行者模板：这是虚构演示资料。替换成你愿意公开的内容。
+# 模块可在 sections 中关闭或调换顺序。只使用中文时 languages: [zh]。
+site:
+  name: { zh: "林野", en: "Lin Ye" }
+  languages: [zh, en]
+  defaultLanguage: zh
+  description: { zh: "一本慢慢更新的旅行记录，装下走过的路和记得的瞬间。", en: "A living travel journal for places, paths and moments worth keeping." }
+  url: "" # 发布后填写你的网站地址
+  shareImage: "" # 可选 PNG/JPG 分享图路径
+  demo: true # 换完示例内容后改为 false
+hero:
+  title: { zh: "远一点，\n记得更久。", en: "Go a little further.\nKeep a little more." }
+  intro: { zh: "我是林野。喜欢沿着陌生街道走走，把路上值得记住的瞬间，放在这里。", en: "I'm Lin Ye. I like unfamiliar streets and unhurried walks. This is where the moments stay." }
+sections:
+  - { id: trips, title: { zh: "旅行记录", en: "Journeys" } }
+  - { id: about, title: { zh: "关于我", en: "About" } }
+  - { id: projects, enabled: false, title: { zh: "作品", en: "Work" } }
+  - { id: experience, enabled: false, title: { zh: "经历", en: "Experience" } }
+  - { id: interests, title: { zh: "喜欢的事", en: "Interests" } }
+  - { id: now, title: { zh: "最近在做", en: "Now" } }
+  - { id: contact, title: { zh: "联系", en: "Contact" } }
+person:
+  bio: { zh: "我更喜欢记住一家小店、一段路、一顿慢慢吃完的饭。这本旅行记录按地点和时间收好，过几年再打开，也能找到那次出发。这里的故事均为模板演示。", en: "A small shop, a quiet path, a meal without a hurry. I keep these journeys by place and time, so they're easy to return to. These stories are fictional template examples." }
+  facts:
+    - { label: { zh: "记录方式", en: "My journal" }, value: { zh: "照片、文字与路线", en: "Photos, notes and routes" } }
+    - { label: { zh: "旅行节奏", en: "My pace" }, value: { zh: "走慢一点", en: "A little slower" } }
+trips:
+  home: { name: { zh: "巴黎", en: "Paris" }, lat: 48.86, lon: 2.35 }
+  places:
+    madrid: { name: { zh: "马德里", en: "Madrid" }, country: { zh: "西班牙", en: "Spain" }, lat: 40.42, lon: -3.70 }
+    lisbon: { name: { zh: "里斯本", en: "Lisbon" }, country: { zh: "葡萄牙", en: "Portugal" }, lat: 38.72, lon: -9.14 }
+    kyoto: { name: { zh: "京都", en: "Kyoto" }, country: { zh: "日本", en: "Japan" }, lat: 35.01, lon: 135.77 }
+    marrakech: { name: { zh: "马拉喀什", en: "Marrakech" }, country: { zh: "摩洛哥", en: "Morocco" }, lat: 31.63, lon: -7.98 }
+    tromso: { name: { zh: "特罗姆瑟", en: "Tromsø" }, country: { zh: "挪威", en: "Norway" }, lat: 69.65, lon: 18.96 }
+  episodes:
+    - id: first-madrid
+      date: "2024-05"
+      stops: [madrid]
+      title: { zh: "在街角，坐一个下午", en: "An afternoon on a street corner" }
+      text: { zh: "地图上的一个点，也可以是一整个下午。演示记录：第一次到马德里，用一张图和一段文字留下这次出发。", en: "A dot on the map can hold a whole afternoon. Demo entry: a first visit to Madrid, kept as an image and a short note." }
+      photos:
+        - { src: "../assets/media/madrid.svg", alt: { zh: "马德里演示图形", en: "Madrid geometric demo artwork" }, caption: { zh: "演示图形，可换成自己的照片。", en: "Demo artwork. Replace with your own photograph." } }
+    - id: lisbon-walk
+      date: "2024-10"
+      stops: [lisbon]
+      title: { zh: "沿着坡道，走向海风", en: "Up the hill, toward the sea" }
+      text: { zh: "演示记录：从一个地点打开这次旅行，也可以直接分享这条记录的地址。", en: "Demo entry: open this journey from the map, or share the entry's own address." }
+      photos:
+        - { src: "../assets/media/lisbon.svg", alt: { zh: "里斯本演示图形", en: "Lisbon geometric demo artwork" } }
+    - id: kyoto-spring
+      date: "2025-03"
+      stops: [kyoto]
+      title: { zh: "春天留在一条小路上", en: "Spring on a quiet path" }
+      text: { zh: "演示记录：照片可以有很多张，也可以只有一段文字。模板不会要求你先剪好一段视频。", en: "Demo entry: a journey can have photographs, or just a few words. A video is optional." }
+      photos:
+        - { src: "../assets/media/kyoto.svg", alt: { zh: "京都演示图形", en: "Kyoto geometric demo artwork" } }
+    - id: second-madrid
+      date: "2025-11"
+      stops: [madrid]
+      title: { zh: "再去一次，走另一条路", en: "Back again, a different path" }
+      text: { zh: "演示记录：同一个地方去两次，记录会放在同一个地点下。打开详情后，可以切换每次到访。", en: "Demo entry: repeat visits belong to the same place. Switch between them inside the detail view." }
+      photos:
+        - { src: "../assets/media/madrid.svg", alt: { zh: "马德里第二次旅行的演示图形", en: "Second Madrid visit demo artwork" } }
+    - id: red-city
+      date: "2026-02"
+      stops: [marrakech]
+      featured: true
+      title: { zh: "给这座城，留一页暖色", en: "A warm page for the red city" }
+      text: { zh: "演示记录：一趟重点旅行。你的照片、路线、文字和可选视频，都可以放在这里。", en: "Demo entry: a featured journey. A place for your photos, route, notes and optional video." }
+      photos:
+        - { src: "../assets/media/marrakech.svg", alt: { zh: "马拉喀什演示图形", en: "Marrakech geometric demo artwork" } }
+    - id: northern-light
+      date: "2099-02" # 故意使用远期日期，展示“计划中”；请替换
+      stops: [tromso]
+      title: { zh: "下一站，向北", en: "Next, north" }
+      text: { zh: "这是计划中的演示旅行，不计入已经完成的旅行统计。", en: "This fictional planned journey does not count as a completed visit." }
+projects:
+  items: []
+experience:
+  items: []
+interests:
+  items:
+    - { id: walking, title: { zh: "城市漫步", en: "City walks" }, text: { zh: "用脚步认识一座城。", en: "Getting to know a place on foot." } }
+    - { id: photography, title: { zh: "随手拍照", en: "Everyday photography" }, text: { zh: "留下一些不赶时间的瞬间。", en: "Keeping moments that aren't in a hurry." } }
+now:
+  items:
+    - { date: "2026-10", text: { zh: "整理旧旅行的照片，让每次出发都有自己的位置。", en: "Sorting old photographs, giving every journey its own place." } }
+contact:
+  headline: { zh: "有好走的路，\n也欢迎告诉我。", en: "Know a good path?\nTell me about it." }
+  email: "hello@example.com"
+  links: []

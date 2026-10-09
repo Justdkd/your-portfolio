@@ -1,0 +1,73 @@
+# 创作者模板：虚构演示资料，项目也都是演示作品。
+site:
+  name: { zh: "林序", en: "Lin Xu" }
+  languages: [zh, en]
+  defaultLanguage: zh
+  description: { zh: "设计、文字与持续进行的小项目。一个创作者的个人作品主页。", en: "Design, writing and small ongoing projects. A creator's portfolio." }
+  url: ""
+  shareImage: "" # 可选 PNG/JPG 分享图路径
+  demo: true
+hero:
+  title: { zh: "把想法，\n做成作品。", en: "Ideas,\nmade tangible." }
+  intro: { zh: "我是林序，一个独立创作者。在设计、文字和日常观察之间，做一些能被看见、被使用的东西。", en: "I'm Lin Xu, an independent creator working across design, writing and everyday observation." }
+sections:
+  - { id: projects, title: { zh: "作品选集", en: "Selected work" } }
+  - { id: about, title: { zh: "关于我", en: "About" } }
+  - { id: experience, title: { zh: "走过的阶段", en: "Experience" } }
+  - { id: trips, enabled: false, title: { zh: "旅行记录", en: "Journeys" } }
+  - { id: interests, enabled: false, title: { zh: "兴趣", en: "Interests" } }
+  - { id: now, title: { zh: "正在进行", en: "In progress" } }
+  - { id: contact, title: { zh: "聊聊下一个想法", en: "What's next?" } }
+person:
+  bio: { zh: "我喜欢把复杂的事情讲清楚，再把它做成可以使用的东西。这里收集项目的过程、结果，以及还在继续的尝试。人物与项目均为演示，你可以替换成自己的设计、视频、文章或产品。", en: "I like making complicated things understandable, then useful. This is a collection of projects, outcomes and ongoing experiments. The person and work here are fictional. Replace them with your designs, videos, writing or products." }
+  facts:
+    - { label: { zh: "关注", en: "Focus" }, value: { zh: "视觉设计 / 内容 / 产品", en: "Visual design / content / products" } }
+    - { label: { zh: "合作", en: "Collaboration" }, value: { zh: "从一个清楚的想法开始", en: "Starting with a clear idea" } }
+projects:
+  items:
+    - id: atlas
+      date: "2026"
+      title: { zh: "慢行地图", en: "An atlas of slow walks" }
+      summary: { zh: "把散落的路线，整理成可以反复打开的城市记录。", en: "Scattered routes, collected into a city journal worth returning to." }
+      text: { zh: "演示项目：一个关于城市观察的视觉系统。从路线、色块和文字出发，把信息整理成易读的地图集。你可以在这里写项目背景、承担的工作和最终结果。", en: "Demo project: a visual system for observing a city. Routes, colors and words become a readable atlas. Use this space for the project's context, your contribution and its outcome." }
+      tags: [{ zh: "视觉设计", en: "Visual identity" }, { zh: "编辑设计", en: "Editorial" }]
+      cover: "../assets/media/atlas.svg"
+      photos:
+        - { src: "../assets/media/atlas.svg", alt: { zh: "慢行地图的几何演示图", en: "Geometric atlas demo artwork" }, caption: { zh: "演示作品封面，自行替换。", en: "Demo cover. Replace with your work." } }
+      link: "" # 填写项目地址后显示访问链接
+    - id: studio
+      date: "2025"
+      title: { zh: "开放工作室", en: "An open studio" }
+      summary: { zh: "让工作过程也有一个能被看见的地方。", en: "A place for the process, as well as the finished work." }
+      text: { zh: "演示项目：以简洁的几何结构和留白构建一个工作室的视觉语言。项目详情支持文字、图片和外部链接。", en: "Demo project: an open studio identity built from geometric structure and space. Details support writing, images and an external link." }
+      tags: [{ zh: "品牌设计", en: "Identity" }]
+      cover: "../assets/media/studio.svg"
+      photos:
+        - { src: "../assets/media/studio.svg", alt: { zh: "开放工作室的几何演示图", en: "Geometric studio demo artwork" } }
+    - id: field-notes
+      date: "2025"
+      title: { zh: "日常观察笔记", en: "Notes from the everyday" }
+      summary: { zh: "一些小观察，变成一组持续更新的内容。", en: "Small observations, an ongoing collection." }
+      text: { zh: "演示项目：这个位置也可以放视频系列、文章合集、摄影作品或独立产品。没有图片时，模板会保留清楚的文字入口。", en: "Demo project: this could be a video series, essays, photographs or an independent product. Without an image, the text still gives the work a clear entry point." }
+      tags: [{ zh: "内容创作", en: "Writing" }]
+      cover: "../assets/media/notes.svg"
+      photos: []
+experience:
+  items:
+    - { date: "2026 —", title: { zh: "把想法变成自己的项目", en: "Independent projects" }, text: { zh: "演示经历：探索设计、内容与小产品的结合。", en: "Demo experience: exploring design, content and small products." } }
+    - { date: "2024 — 2025", title: { zh: "开始持续创作", en: "A steady creative practice" }, text: { zh: "演示经历：从零散的练习，走向完整的系列作品。", en: "Demo experience: from scattered exercises to complete series." } }
+trips:
+  home: { name: { zh: "巴黎", en: "Paris" }, lat: 48.86, lon: 2.35 }
+  places:
+    porto: { name: { zh: "波尔图", en: "Porto" }, country: { zh: "葡萄牙", en: "Portugal" }, lat: 41.16, lon: -8.63 }
+  episodes:
+    - { id: porto-walk, date: "2024-05", stops: [porto], title: { zh: "一个散步的周末", en: "A weekend of walking" }, text: { zh: "可选旅行模块的演示记录。", en: "Demo entry for the optional travel section." } }
+interests:
+  items: []
+now:
+  items:
+    - { date: "2026-10", text: { zh: "整理一组城市观察，尝试把照片与文字放在同一页。", en: "Collecting city observations, bringing photographs and writing onto the same page." } }
+contact:
+  headline: { zh: "一个好想法，\n可以从聊天开始。", en: "A good idea\nstarts with a conversation." }
+  email: "hello@example.com"
+  links: []

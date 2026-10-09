@@ -1,0 +1,8 @@
+.DS_Store
+.local/
+.env
+.env.*
+dist/
+inputs/
+*.log
+.wrangler/
