@@ -14,6 +14,18 @@ sections:
 
 列表顺序就是页面顺序。可用 id：`about`、`trips`、`projects`、`experience`、`interests`、`now`、`contact`。同一 id 只出现一次。除了首屏，没有内容的模块自动隐藏。
 
+## 地图飞行动画
+
+```yaml
+trips:
+  flightAnimation: true
+  home: { name: { zh: "起点城市", en: "Departure city" }, lat: 48.86, lon: 2.35 }
+```
+
+`flightAnimation: true` 为地图点选播放约 1 秒纸飞机飞行，`false` 为直接打开；省略时默认开启。时间线始终直接打开，系统减少动态效果也会跳过飞行。连续点选取消旧航班；Esc、拖动/缩放、切换语言、滚离地图或切到后台会取消未完成的飞行，不再延迟弹出旧详情。
+
+创作者模式开启旅行模块后使用同一设置。起点只填写愿意公开的城市位置；小房子是地图起点标记，不需要提供家庭地址。
+
 ## 新增一次旅行
 
 先在 `trips.places` 添加新城市；已经有的城市复用 id。

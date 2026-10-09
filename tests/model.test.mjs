@@ -76,3 +76,9 @@ test('empty optional contact and photo do not create active sections', () => {
 test('data validation is safe for a non-object content file', () => {
   assert.ok(M.validate(null).length); assert.ok(M.validate('bad').length);
 });
+test('flight animation accepts only a boolean configuration', () => {
+  const c = base(); c.trips = trips(); c.trips.flightAnimation = 'false';
+  assert.match(M.validate(c).join('\n'), /trips.flightAnimation/);
+  c.trips.flightAnimation = false; assert.deepEqual(plain(M.validate(c)), []);
+  c.trips.flightAnimation = true; assert.deepEqual(plain(M.validate(c)), []);
+});

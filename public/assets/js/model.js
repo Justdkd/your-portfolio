@@ -85,6 +85,7 @@
     var secs = list(c.sections, 'sections'); unique(secs, 'sections');
     secs.forEach(function (s, i) { if (!s || IDS.indexOf(s.id) < 0) bad('sections[' + i + '].id', '未知模块 / unknown section'); });
     var t = c.trips || {}, places = t.places || {};
+    if (t.flightAnimation != null && typeof t.flightAnimation !== 'boolean') bad('trips.flightAnimation', '飞行动画开关应为 true 或 false / flight animation must be a boolean');
     if (t.home) coord(t.home, 'trips.home');
     Object.keys(places).forEach(function (id) { if (!ID.test(id)) bad('trips.places.' + id, '无效 id / invalid id'); coord(places[id], 'trips.places.' + id); });
     var eps = list(t.episodes, 'trips.episodes'); unique(eps, 'trips.episodes');

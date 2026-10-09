@@ -51,6 +51,8 @@ python3 -m http.server 8090 --bind 127.0.0.1 --directory public
 
 [内容编辑指南](docs/content.md) 包含新增旅行、作品和模块的完整示例。换好所有示例后，把 `site.demo` 改为 `false`。
 
+地图点选会播放约 1 秒的纸飞机飞行，再打开对应详情；时间线点击直接打开。将 `trips.flightAnimation` 设为 `false` 可关闭飞行。系统启用减少动态效果、直接访问详情或使用浏览器前进后退时，直接显示详情。飞机和起点图标沿用模板颜色，出发地来自 `trips.home`。
+
 ## 选一套，独立发布
 
 ```bash
@@ -86,6 +88,7 @@ node tools/export.mjs traveler
 node --test tests/*.test.mjs
 node tools/check-content.mjs
 node tools/check_trips.mjs
+node tools/check-flight.mjs
 ```
 
 最后一个命令需要本机 Chrome。macOS 默认路径已配置，其他系统指定 Chrome 可执行文件：

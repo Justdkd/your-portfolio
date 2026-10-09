@@ -5,6 +5,7 @@
   var rootURL = new URL('../../', script.src), mode = document.body.dataset.mode;
   var content, ui, lang, activeSections = [], model, globe, globeNode, globeLoading = false;
   var dialog = document.getElementById('detail'), opened = '', pushed = false, returnFocus = null, observer;
+  var flightRequest = 0, flyingRoute = '', flightTrigger = null;
   var main = document.getElementById('main');
   var ICON = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19L19 5M5 5h14v14" stroke="currentColor" stroke-width="1.5"/></svg>';
 
@@ -13,6 +14,20 @@
   function t(key) { return pick(ui[key]); }
   function reduced() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
   function enabled(id) { return activeSections.some(function (s) { return s.id === id; }); }
+  function invalidateFlight() { flightRequest++; flyingRoute = ''; flightTrigger = null; }
+  function cancelFlight() { invalidateFlight(); if (globe) globe.cancelTravel(); }
+  function flyToTrip(id, button) {
+    var eps = model.places[id].eps;
+    var ep = eps.filter(function (e) { return !e.upcoming; }).slice(-1)[0] || eps[0];
+    cancelFlight();
+    var route = 'trips/' + id + '/' + ep.id, request = flightRequest;
+    flyingRoute = route; flightTrigger = button;
+    globe.select(id); globe.highlight(ep.stops, ep.upcoming);
+    globe.travelTo(id, function () {
+      if (request !== flightRequest || flyingRoute !== route || opened) return;
+      flyingRoute = ''; flightTrigger = null; open(route, true, button);
+    });
+  }
   function image(src, alt, extra) {
     var safe = M.safeUrl(src, 'media'); if (!safe) return '';
     return '<div class="media-frame ' + (extra || '') + '"><img src="' + esc(safe) + '" alt="' + esc(pick(alt)) + '" loading="lazy" decoding="async"><span class="media-fallback" hidden>' + esc(t('imageMissing')) + '</span></div>';
@@ -111,9 +126,10 @@
       if (!globeNode || !globeNode.isConnected) return;
       globe = window.PortfolioGlobe.create(globeNode.querySelector('.globe-root'), {
         land: window.PortfolioGlobe.math.decodeLand(data), home: model.home, initialView: { lon: model.home.lon, lat: model.home.lat }, reducedMotion: reduced,
+        flightEnabled: content.trips.flightAnimation !== false, onTravelCancel: invalidateFlight,
         zoomIn: document.getElementById('zoom-in'), zoomOut: document.getElementById('zoom-out'),
         clusterLabel: function (names) { return t('clusterLabel').replace('{names}', names.join(', ')); },
-        onSelectPlace: function (id, button) { var eps = model.places[id].eps; var ep = eps.filter(function (e) { return !e.upcoming; }).slice(-1)[0] || eps[0]; open('trips/' + id + '/' + ep.id, true, button); }
+        onSelectPlace: flyToTrip
       });
       if (globe) { labels(); globeNode.classList.add('is-ready'); if (opened.indexOf('trips/') === 0) detailHTML(opened); }
     }).catch(function () { if (globeNode) globeNode.hidden = true; }).finally(function () { globeLoading = false; });
@@ -152,6 +168,7 @@
   }
   function open(route, push, button) {
     var html = detailHTML(route); if (!html) { status(); return false; }
+    cancelFlight();
     if (button) returnFocus = button;
     else if (!returnFocus) returnFocus = document.querySelector('[data-route="' + route.replace(/[^a-z0-9/-]/g, '') + '"]');
     document.getElementById('detail-body').innerHTML = html; dialog.setAttribute('aria-labelledby', 'detail-title');
@@ -181,6 +198,7 @@
     el.hidden = false;
   }
   function applyRoute() {
+    cancelFlight();
     document.getElementById('route-status').hidden = true;
     var route; try { route = decodeURIComponent(location.hash.slice(1)); } catch (e) { status(); return; }
     if (route.includes('/')) { if (!open(route, false)) finishClose(); return; }
@@ -197,10 +215,17 @@
   dialog.addEventListener('click', function (e) { if (e.target === dialog) close(); });
   window.addEventListener('hashchange', function () { if (content && mode !== 'gallery') applyRoute(); });
   document.getElementById('lang-toggle').addEventListener('click', function () {
+    cancelFlight();
     lang = lang === 'zh' ? 'en' : 'zh';
     try { localStorage.setItem('portfolio.' + mode + '.language', lang); } catch (e) { /* 禁用存储不影响语言切换 */ }
     var focusRoute = returnFocus && returnFocus.dataset.route, route = opened;
     render(); if (route) { returnFocus = focusRoute ? document.querySelector('[data-route="' + focusRoute + '"]') : null; open(route, false); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || !flyingRoute) return;
+    var trigger = flightTrigger; cancelFlight();
+    if (trigger && trigger.isConnected && !trigger.hidden) trigger.focus({ preventScroll: true });
+    else if (globeNode) globeNode.querySelector('canvas').focus({ preventScroll: true });
   });
   window.addEventListener('scroll', function () {
     var max = document.documentElement.scrollHeight - innerHeight;

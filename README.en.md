@@ -53,6 +53,8 @@ Names, introductions, journeys, projects, experience, current activities and con
 
 The [content editing guide](docs/content.md) includes examples for adding journeys, projects and sections. After replacing all demo content, set `site.demo` to `false`.
 
+Choosing a place on the map plays a paper-plane flight lasting about one second, then opens its details. Timeline entries open immediately. Set `trips.flightAnimation` to `false` to disable the flight. Reduced motion, direct detail links and browser back/forward open details directly. The plane and home marker use the template palette, and the departure point comes from `trips.home`.
+
 ## Publish one template
 
 ```bash
@@ -90,6 +92,7 @@ Share titles and descriptions must be written into static HTML, not just updated
 node --test tests/*.test.mjs
 node tools/check-content.mjs
 node tools/check_trips.mjs
+node tools/check-flight.mjs
 ```
 
 The last command requires a local Chrome installation. The default macOS path is configured. On other systems, specify the Chrome executable:
