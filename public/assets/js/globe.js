@@ -190,6 +190,14 @@
     var W = 0, H = 0, R = 0, cx = 0, cy = 0, dpr = 1;
     var places = [], byId = {}, selectedId = null, clusterPool = [];
     var route = null, routeDashed = false, routeProg = 1;
+    var flight = null;
+    var plane = document.createElement('span');
+    plane.className = 'globe-plane'; plane.hidden = true; plane.setAttribute('aria-hidden', 'true');
+    plane.innerHTML = '<svg viewBox="0 0 34 28" xmlns="http://www.w3.org/2000/svg">' +
+      '<path class="plane-paper" d="M32 14 2 2 8 14 2 26Z"/>' +
+      '<path class="plane-fold" d="M32 14 8 14 2 26Z"/>' +
+      '<path class="plane-paper" d="M8 14 5 20 32 14"/></svg>';
+    root.appendChild(plane);
     var anim = null, iner = null, raf = 0, drag = null, pinch = null, pointers = {};
     var interactive = true, visible = false, inView = false, introDone = false, introAbort = false;
     var fcan = document.createElement('canvas'), fctx = fcan.getContext('2d'), fimg = null, FN = 0;
@@ -283,11 +291,35 @@
       var h = rotate(homeV, view);
       if (h[0] <= 0) return;
       var x = cx + rr * h[1], y = cy - rr * h[2];
-      ctx.fillStyle = COL.home; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(x, y - 8); ctx.lineTo(x + 7, y - 2); ctx.lineTo(x + 7, y + 6);
-      ctx.lineTo(x - 7, y + 6); ctx.lineTo(x - 7, y - 2); ctx.closePath();
-      ctx.stroke(); ctx.fill();
+      /* 通用起点图标：屋顶、门窗，颜色沿用地图配置。 */
+      ctx.save(); ctx.translate(x, y); ctx.lineJoin = 'round';
+      ctx.fillStyle = COL.home; ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.roundRect(5, -13, 4, 9, 1); ctx.stroke(); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(-9, -3, 18, 17, 3);
+      ctx.fillStyle = '#fff'; ctx.lineWidth = 4; ctx.stroke(); ctx.fill();
+      ctx.strokeStyle = COL.home; ctx.lineWidth = 1.6; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-13, -2); ctx.lineTo(0, -13); ctx.lineTo(13, -2);
+      ctx.lineTo(10, 1); ctx.lineTo(0, -7); ctx.lineTo(-10, 1); ctx.closePath();
+      ctx.fillStyle = COL.home; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke(); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(2, 5, 5, 9, 1.5); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(-7, 3, 5, 5, 1); ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.moveTo(-4.5, 3); ctx.lineTo(-4.5, 8); ctx.moveTo(-7, 5.5); ctx.lineTo(-2, 5.5); ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawPlane(rr) {
+      plane.hidden = true;
+      if (!flight) return;
+      var path = flight.path, n = path.length - 1, at = flight.progress * n;
+      var i = Math.min(n - 1, Math.floor(at)), f = at - i, a = path[i], b = path[i + 1];
+      var q = rotate([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f], view);
+      if (q[0] <= 0 && Math.hypot(q[1], q[2]) <= 1.0005) return;
+      var next = rotate(b, view), prev = rotate(a, view);
+      var angle = Math.atan2(-(next[2] - prev[2]), next[1] - prev[1]);
+      plane.hidden = false;
+      plane.style.transform = 'translate(' + (cx + rr * q[1] - 17) + 'px,' + (cy - rr * q[2] - 14) + 'px) rotate(' + angle + 'rad)';
+      plane.style.opacity = String(Math.min(1, (1 - flight.progress) / 0.12));
     }
 
     function draw() {
@@ -306,13 +338,17 @@
       places.forEach(function (p) { strokeArc(p.arc, 1, rr); });
       ctx.setLineDash([]);
 
-      if (route) {
+      if (flight) {
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 5.5; strokeArc(flight.path, flight.progress, rr);
+        ctx.strokeStyle = COL.route; ctx.lineWidth = 2.6; strokeArc(flight.path, flight.progress, rr);
+      } else if (route) {
         if (routeDashed) ctx.setLineDash([6, 6]);
         ctx.strokeStyle = '#fff'; ctx.lineWidth = 5.5; strokeArc(route, routeProg, rr);
         ctx.strokeStyle = COL.route; ctx.lineWidth = 2.6; strokeArc(route, routeProg, rr);
         ctx.setLineDash([]);
       }
       drawHome(rr);
+      drawPlane(rr);
       placePins(rr);
       root.classList.toggle('is-zoomed', view.k > ZOOMED);
       root.dataset.view = view.lon.toFixed(2) + ',' + view.lat.toFixed(2) + ',' + view.k.toFixed(2);
@@ -477,7 +513,16 @@
         iner.v *= Math.pow(0.93, dt / (1000 / 60));
         if (Math.abs(iner.v) < 0.002) iner = null; else busy = true;
       }
-      if (route && routeProg < 1) { routeProg = Math.min(1, routeProg + 0.022); busy = true; }
+      if (flight) {
+        /* 按时间推进，屏幕刷新率不会改变飞行时长。 */
+        flight.progress = reduced() ? 1 : clamp((now - flight.t0) / 1000, 0, 1);
+        if (flight.progress >= 1) {
+          var arrived = flight.done, target = flight.id;
+          flight = null; routeProg = 1; focusPlace(target, null, true);
+          if (arrived) arrived();
+        } else busy = true;
+      }
+      if (!flight && route && routeProg < 1) { routeProg = Math.min(1, routeProg + 0.022); busy = true; }
       draw();
       if (busy) kick();
     }
@@ -490,12 +535,23 @@
         var cb = anim.done; anim = null;
         if (cb) cb();
       }
-      iner = null; routeProg = 1;
+      /* 用户滚离地图或切到后台时取消待打开详情。 */
+      cancelTravel(); iner = null; routeProg = 1;
       draw();
+    }
+
+    function cancelTravel() {
+      var pending = !!flight;
+      flight = null; plane.hidden = true;
+      if (pending) {
+        anim = null;
+        if (opts.onTravelCancel) opts.onTravelCancel();
+      }
     }
 
     function flyTo(lon, lat, k, done, dur) {
       stopIntro();
+      cancelTravel();
       iner = null;
       var b = { lon: view.lon + normLon(lon - view.lon), lat: clamp(lat, MIN_LAT, MAX_LAT), k: clampK(k == null ? view.k : k) };
       if (reduced() || !visible) {
@@ -512,6 +568,7 @@
     }
 
     function focusPlace(id, done, instant) {
+      cancelTravel();
       var p = byId[id];
       if (!p) { if (done) done(); return; }
       /* 放大到离它最近的那个地点也能分开（至少 1.4 倍）；最近的分开了，更远的自然也分开 */
@@ -533,6 +590,16 @@
       flyTo(p.lon, p.lat - 8, k, done);
     }
 
+    function travelTo(id, done) {
+      var p = byId[id]; cancelTravel();
+      if (!p || opts.flightEnabled === false || reduced() || !visible || angleDeg(homeV, p.v) < 1e-6) { focusPlace(id, done, true); return; }
+      stopIntro(); anim = null; iner = null;
+      view.lon = opts.home.lon; view.lat = clamp(opts.home.lat - 8, MIN_LAT, MAX_LAT); view.k = 1;
+      flyTo(p.lon, p.lat - 8, 1, null, 1000);
+      flight = { id: id, path: arc(homeV, p.v, 120, 0.8), progress: 0, t0: window.performance.now(), done: done };
+      draw(); kick();
+    }
+
     function tryIntro() {
       if (introDone || !inView || document.visibilityState !== 'visible') return;
       introDone = true;
@@ -552,7 +619,7 @@
     canvas.addEventListener('pointerdown', function (e) {
       if (!interactive) return;
       pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
-      stopIntro(); anim = null; iner = null;
+      stopIntro(); cancelTravel(); anim = null; iner = null;
       var ids = Object.keys(pointers);
       if (ids.length === 2) {
         var a = pointers[ids[0]], b = pointers[ids[1]];
@@ -600,7 +667,7 @@
     canvas.addEventListener('wheel', function (e) {
       if (!e.ctrlKey || !interactive) return;
       e.preventDefault();
-      stopIntro(); anim = null;
+      stopIntro(); cancelTravel(); anim = null;
       view.k = clampK(view.k * Math.exp(-e.deltaY * 0.01));
       draw();
     }, { passive: false });
@@ -655,10 +722,12 @@
       highlight: highlight,
       flyTo: flyTo,
       focusPlace: focusPlace,
+      travelTo: travelTo,
+      cancelTravel: cancelTravel,
       skipIntro: stopIntro,
       setInteractive: function (on) {
         interactive = !!on;
-        if (!interactive) { drag = null; pinch = null; pointers = {}; iner = null; }
+        if (!interactive) { cancelTravel(); drag = null; pinch = null; pointers = {}; iner = null; }
       },
       pin: function (id) { var p = byId[id]; return p && !p.el.hidden ? p.el : null; },
       view: function () { return { lon: view.lon, lat: view.lat, k: view.k }; }

@@ -25,6 +25,7 @@ person:
     - { label: { zh: "记录方式", en: "My journal" }, value: { zh: "照片、文字与路线", en: "Photos, notes and routes" } }
     - { label: { zh: "旅行节奏", en: "My pace" }, value: { zh: "走慢一点", en: "A little slower" } }
 trips:
+  flightAnimation: true # 地图点选时播放纸飞机；false 为直接打开
   home: { name: { zh: "巴黎", en: "Paris" }, lat: 48.86, lon: 2.35 }
   places:
     madrid: { name: { zh: "马德里", en: "Madrid" }, country: { zh: "西班牙", en: "Spain" }, lat: 40.42, lon: -3.70 }

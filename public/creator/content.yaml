@@ -57,6 +57,7 @@ experience:
     - { date: "2026 —", title: { zh: "把想法变成自己的项目", en: "Independent projects" }, text: { zh: "演示经历：探索设计、内容与小产品的结合。", en: "Demo experience: exploring design, content and small products." } }
     - { date: "2024 — 2025", title: { zh: "开始持续创作", en: "A steady creative practice" }, text: { zh: "演示经历：从零散的练习，走向完整的系列作品。", en: "Demo experience: from scattered exercises to complete series." } }
 trips:
+  flightAnimation: true # 开启旅行模块后适用；false 为直接打开
   home: { name: { zh: "巴黎", en: "Paris" }, lat: 48.86, lon: 2.35 }
   places:
     porto: { name: { zh: "波尔图", en: "Porto" }, country: { zh: "葡萄牙", en: "Portugal" }, lat: 41.16, lon: -8.63 }

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Generic travel flight fixture</title>
+<link rel="stylesheet" href="../../public/assets/css/style.css">
+<body data-mode="traveler">
+<div class="globe-wrap" style="width:560px;margin:20px auto"><div class="globe-root"><canvas class="globe-canvas"></canvas><div class="globe-pins"></div></div></div>
+<script src="../../public/assets/js/globe.js"></script>
+<script>
+fetch('../../public/assets/data/land-110m.json').then(function (r) { return r.json(); }).then(function (data) {
+  window.arrivals = [];
+  window.testGlobe = PortfolioGlobe.create(document.querySelector('.globe-root'), {
+    home: { lon: 2.35, lat: 48.86 }, initialView: { lon: 2.35, lat: 48.86 },
+    land: PortfolioGlobe.math.decodeLand(data),
+    reducedMotion: function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; },
+    flightEnabled: new URL(location.href).searchParams.get('flight') !== 'off'
+  });
+  testGlobe.setPlaces([
+    { id: 'lisbon', label: 'Lisbon', aria: 'Lisbon', lon: -9.14, lat: 38.72, kind: 'normal' },
+    { id: 'rome', label: 'Rome', aria: 'Rome', lon: 12.5, lat: 41.9, kind: 'normal' }
+  ]);
+  testGlobe.skipIntro();
+  document.body.dataset.ready = 'true';
+});
+</script>
+</body></html>

@@ -39,6 +39,8 @@ Grounded structures considered: travel journal, exhibition wall, directory of re
 
 Interaction: one purposeful globe opening, pointer and touch rotation, real buttons for places, explicit timeline navigation. Project artwork opens a protected-focus dialog with its own URL. Reduced motion skips the globe opening and smooth scrolling. No hover-only affordances.
 
+Map place selection uses an optional one-second paper-plane flight from the configured departure city before opening details. Timeline entries and deep links open directly. Plane outlines inherit the template accent, folds inherit globe ocean, and the home marker inherits globe home color. Interrupted flights cannot open stale details; reduced motion skips travel animation.
+
 Responsive: split first viewport on desktop; copy then globe/artwork on mobile; timeline collapses to two readable columns; dialogs fill the mobile viewport. Templates remain useful with no optional photo, globe or project image.
 
 Scope: this implementation uses native code visuals following the user's instruction to proceed; no standing image-first/code-first workflow preference is saved.
