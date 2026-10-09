@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, mkdtempSync, cpSync, rmSync } from 'node:fs';
+import { existsSync, readFileSync, mkdtempSync, cpSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,9 +29,30 @@ test('selected template export contains no other template or project documents',
     assert.ok(existsSync(join(out, 'site/assets/js/app.js')));
     assert.equal(existsSync(join(out, 'site/traveler')), false);
     assert.equal(existsSync(join(out, 'site/README.md')), false);
+    assert.equal(existsSync(join(out, 'site/assets/media/kyoto.svg')), false);
+    assert.equal(existsSync(join(out, 'site/assets/media/madrid.svg')), false);
+    assert.ok(existsSync(join(out, 'site/assets/media/atlas.svg')));
     assert.doesNotMatch(readFileSync(join(out, 'site/content.yaml'), 'utf8'), /\.\.\/assets/);
     assert.match(readFileSync(join(out, 'site/index.html'), 'utf8'), /<title>林序<\/title>/);
     assert.doesNotMatch(readFileSync(join(out, 'site/index.html'), 'utf8'), /\.\.\/assets/);
+  } finally { rmSync(out, { recursive: true, force: true }); }
+});
+test('HLS export follows only declared local dependencies and rejects paths outside assets', () => {
+  const out = mkdtempSync(join(tmpdir(), 'portfolio-hls-test-'));
+  try {
+    cpSync(join(root, 'public'), join(out, 'public'), { recursive: true });
+    const media = join(out, 'public/assets/media/hls-demo'); mkdirSync(media);
+    writeFileSync(join(media, 'index.m3u8'), '#EXTM3U\n#EXT-X-MAP:URI="init.mp4"\n#EXTINF:2.0,\nsegment.m4s\n');
+    writeFileSync(join(media, 'init.mp4'), 'test init'); writeFileSync(join(media, 'segment.m4s'), 'test segment');
+    writeFileSync(join(media, 'unreferenced.txt'), 'must not publish');
+    const c = T.loadContent('creator', out); c.projects.items[0].hls = '../assets/media/hls-demo/index.m3u8';
+    writeFileSync(join(out, 'public/creator/content.yaml'), T.YAML.dump(c));
+    T.exportTemplate('creator', join(out, 'site'), out);
+    assert.ok(existsSync(join(out, 'site/assets/media/hls-demo/init.mp4')));
+    assert.ok(existsSync(join(out, 'site/assets/media/hls-demo/segment.m4s')));
+    assert.equal(existsSync(join(out, 'site/assets/media/hls-demo/unreferenced.txt')), false);
+    writeFileSync(join(media, 'index.m3u8'), '#EXTM3U\n../../../../README.md\n');
+    assert.throws(() => T.exportTemplate('creator', join(out, 'unsafe-site'), out), /outside assets/);
   } finally { rmSync(out, { recursive: true, force: true }); }
 });
 test('missing media produces a field-specific error', () => {

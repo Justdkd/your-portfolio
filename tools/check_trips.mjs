@@ -53,6 +53,8 @@ try {
   await check('travel place with repeat visit and episode selection', async () => {
     await b.navigate('/traveler/#trips/madrid/second-madrid');
     await b.wait('document.querySelector("dialog").open');
+    await b.wait('document.querySelector(".globe-pin")');
+    assert.equal(await b.evaluate('document.querySelector(".globe-pin.is-selected")?.dataset.id'), 'madrid');
     assert.ok(await b.evaluate('document.querySelectorAll("[data-episode]").length >= 2'));
     assert.ok(await b.evaluate('document.querySelector("dialog img").complete'));
     await click('#detail-close');
@@ -80,6 +82,8 @@ try {
     assert.deepEqual(await b.evaluate('[...document.querySelectorAll("main > section:not(.hero)")].map(s=>s.id)'), ['contact', 'about']);
     assert.equal(await b.evaluate('document.querySelector("dialog").open'), false);
     assert.ok(await b.evaluate('document.querySelector("#route-status").textContent.length > 0'));
+    assert.ok(await b.evaluate('document.querySelector("#route-status a")'));
+    await click('#route-status a'); await b.wait('document.querySelector("#route-status").hidden');
     assert.ok(await b.evaluate('document.documentElement.scrollWidth <= innerWidth'));
     b.overrides.clear();
   });

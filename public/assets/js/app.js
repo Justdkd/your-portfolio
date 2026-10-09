@@ -115,7 +115,7 @@
         clusterLabel: function (names) { return t('clusterLabel').replace('{names}', names.join(', ')); },
         onSelectPlace: function (id, button) { var eps = model.places[id].eps; var ep = eps.filter(function (e) { return !e.upcoming; }).slice(-1)[0] || eps[0]; open('trips/' + id + '/' + ep.id, true, button); }
       });
-      if (globe) { labels(); globeNode.classList.add('is-ready'); }
+      if (globe) { labels(); globeNode.classList.add('is-ready'); if (opened.indexOf('trips/') === 0) detailHTML(opened); }
     }).catch(function () { if (globeNode) globeNode.hidden = true; }).finally(function () { globeLoading = false; });
   }
   function observeSections() {
@@ -176,7 +176,9 @@
     if (goBack) history.back(); else history.replaceState(null, '', '#' + parent);
   }
   function status() {
-    var el = document.getElementById('route-status'); el.textContent = t('routeMissing'); el.hidden = false;
+    var el = document.getElementById('route-status');
+    el.innerHTML = '<span>' + esc(t('routeMissing')) + '</span> <a href="#hero">' + esc(t('back')) + '</a>';
+    el.hidden = false;
   }
   function applyRoute() {
     document.getElementById('route-status').hidden = true;
